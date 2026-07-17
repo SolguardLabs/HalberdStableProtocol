@@ -1,4 +1,4 @@
-vyper>=0.4.1,<0.5
+vyper>=0.4.3,<0.5
 pytest
 web3
 eth-tester
