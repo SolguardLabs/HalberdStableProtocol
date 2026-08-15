@@ -1,0 +1,60 @@
+name: Release Integrity
+
+on:
+  push:
+    branches:
+      - main
+      - production
+    tags:
+      - "v*"
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-integrity-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Version, artefactos y referencias
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.release.tag_name || github.ref }}
+      - name: Configure Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Validate content
+        run: python scripts/verify_release.py
+      - name: Validate published references
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          head_sha="$(git rev-parse HEAD)"
+          main_sha="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+
+          if [[ "$REF_NAME" == "production" ]]; then
+            test "$head_sha" = "$main_sha"
+          fi
+
+          if [[ "$REF_TYPE" == "tag" || "$EVENT_NAME" == "release" ]]; then
+            tag_name="${RELEASE_TAG:-$REF_NAME}"
+            production_sha="$(git ls-remote origin refs/heads/production | awk '{print $1}')"
+            tag_sha="$(git rev-parse "${tag_name}^{commit}")"
+            test "$tag_sha" = "$main_sha"
+            test "$tag_sha" = "$production_sha"
+          fi
