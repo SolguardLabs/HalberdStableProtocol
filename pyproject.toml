@@ -1,0 +1,13 @@
+[project]
+name = "halberd-stable-protocol"
+version = "1.0.0"
+description = "Overcollateralized stablecoin and reserve management protocol"
+requires-python = ">=3.12,<3.13"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tests/private"]
+addopts = ["--strict-config", "--strict-markers"]
+filterwarnings = [
+  "ignore:websockets.legacy is deprecated:DeprecationWarning",
+]
