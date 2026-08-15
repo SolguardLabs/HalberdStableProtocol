@@ -36,6 +36,7 @@ def compiled():
         "HalberdMath",
         "HalberdParameterRegistry",
         "HalberdEmergencyShutdown",
+        "HalberdSolvencyController",
     ]
     return {name: compile_contract(name) for name in names}
 
