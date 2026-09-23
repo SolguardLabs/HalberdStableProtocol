@@ -1,11 +1,11 @@
 # HalberdStableProtocol
 
-![HalberdStableProtocol](./assets/banner.png)
-
 [![CI](https://github.com/SolguardLabs/HalberdStableProtocol/actions/workflows/ci.yml/badge.svg)](https://github.com/SolguardLabs/HalberdStableProtocol/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/SolguardLabs/HalberdStableProtocol?display_name=tag)](https://github.com/SolguardLabs/HalberdStableProtocol/releases)
 [![Vyper](https://img.shields.io/badge/Vyper-0.4.3-9f4cf4)](https://vyperlang.org/)
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB)](https://www.python.org/)
+
+![HalberdStableProtocol](./assets/banner.png)
 
 HalberdStableProtocol es un sistema de moneda estable sobrecolateralizada escrito
 en Vyper. Integra vaults, oráculo, límites por mercado, liquidaciones, reservas,
